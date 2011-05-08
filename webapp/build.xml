@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
 <project xmlns:ivy="antlib:org.apache.ivy.ant" name="mywebapp" default="build">
+	<property name="repoLocalPathPath" location="${basedir}\.."/>
+	
+	
 	<path id="ivy.lib.path">
 	    <fileset dir="${basedir}/tools/apache-ivy-2.2.0" includes="*.jar"/>
 	</path>
@@ -10,7 +13,7 @@
 		<ivy:settings file="${basedir}/tools/ivysettings.xml" />
 		<ivy:resolve file="${basedir}/ivy.xml"/>
 		<ivy:artifactproperty name="${ivy.artifactproperty.name}" value="${ivy.artifactproperty.value}"/>
-
+		
 		<property name="YUI" value ="${basedir}/tools/yuicompressor-2.4.6/yuicompressor-2.4.6.jar" />
 		<property name="dir.public" value="${basedir}/public" />
 		<property name="dir.local" value="${basedir}/src" />

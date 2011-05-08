@@ -1,0 +1,1 @@
+you have to modify in files webapp/build.bat (or webapp/build.sh depending on your environment) to pass to AND the local path of the folder JSRepo set your local path as ANT argument
