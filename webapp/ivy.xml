@@ -1,0 +1,6 @@
+<ivy-module version="2.0">
+    <info organisation="MyCompany" module="myWebApp" />
+    <dependencies>
+        <dependency org="libs" name="slider" rev="1.0.0"/>
+    </dependencies>
+</ivy-module>

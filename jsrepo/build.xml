@@ -1,0 +1,72 @@
+<project name="jsRepo" default="build">
+    <property name="dir.prj" location="src"/>
+	<property name="dir.dist"  location="dist"/>
+	<property name="dir.tools"  location="tools"/>
+	<property file="${dir.prj}/${prj}/src/version.prop" />
+	
+	<scriptdef name="jslint" src="${dir.tools}/jslint/jslintant.js" language="javascript">
+    		<attribute name="options"/>
+    		<element name="fileset" type="fileset"/>
+	</scriptdef>
+
+	<target name="build">
+		<antcall target="lint"/>
+		<antcall target="unit"/>
+		
+		<condition property="exists">
+			<available file="${dir.dist}/${prj}-${version}" type="dir"/>
+		</condition>
+		
+		<antcall target="release" />
+		<antcall target="error" />
+	</target>
+
+	<target name="lint">
+		<jslint options="{indent: 4, eqeqeq : true, bitwise : true, passfail: false, browser: true, evil: false, forin: true, newcap : false, onevar : false, immed: true, maxlen:72}">
+		    <fileset dir="${dir.prj}/${prj}">
+		        <include name="**/*.js"/>
+		    </fileset>
+		</jslint>
+	</target>
+
+	<target name="unit">
+	
+		<condition property="isWindows">
+            <os family="windows" />
+		</condition>
+
+		<condition property="isMac">
+            <os family="mac" />
+		</condition>
+
+		<antcall target="unit-win" />
+		<antcall target="unit-mac" />
+	</target>
+	
+    <target name="unit-win" if="isWindows">
+        <java jar="${dir.tools}\JsTestDriver-1.3.2\JsTestDriver-1.3.2.jar" fork="true" failonerror="true">
+    		<arg line="--port 9876 --captureConsole --verbose --browser 'C:\Program Files\Internet Explorer\iexplore.exe' --tests all --config '${dir.prj}/${prj}/jsTestDriver.conf'"/>
+		</java>
+	</target>
+	
+	<target name="unit-mac" if="isMac">
+        <java jar="${dir.tools}\JsTestDriver-1.3.2\JsTestDriver-1.3.2.jar" fork="true" failonerror="true">
+    		<arg line="--port 9876 --captureConsole  --verbose --browser '/Applications/Firefox.app/Contents/MacOS/firefox' --tests all --config '${dir.prj}/${prj}/jsTestDriver.conf'"/>
+		</java>
+	</target>
+
+	<target name="release" unless="exists">
+		<copy todir="${dir.dist}/${prj}-${version}">
+			<fileset dir="${dir.prj}/${prj}/src">
+				<include name="**/*.js"/>
+			</fileset>
+		</copy>
+		
+		<echo message="******** ${prj}-${version} has been correctly released exists. ********" />
+	</target>
+	
+	<target name="error" if="exists">
+		<echo message="******** ${prj}-${version} already exists. nothing will be released ********" />
+	</target>
+
+</project>

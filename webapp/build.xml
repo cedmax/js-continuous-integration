@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="mywebapp" default="build">
+	<path id="ivy.lib.path">
+	    <fileset dir="${basedir}/tools/apache-ivy-2.2.0" includes="*.jar"/>
+	</path>
+	<taskdef resource="org/apache/ivy/ant/antlib.xml"
+	         uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"/>
+	
+	<target name="init">
+		<ivy:settings file="${basedir}/tools/ivysettings.xml" />
+		<ivy:resolve file="${basedir}/ivy.xml"/>
+		<ivy:artifactproperty name="${ivy.artifactproperty.name}" value="${ivy.artifactproperty.value}"/>
+
+		<property name="YUI" value ="${basedir}/tools/yuicompressor-2.4.6/yuicompressor-2.4.6.jar" />
+		<property name="dir.public" value="${basedir}/public" />
+		<property name="dir.local" value="${basedir}/src" />
+		<property name="dir.ivycache" value="${ivy.cache.dir}" /> 
+	</target>
+
+	<target name="build" depends="init">
+		<concat destfile="${dir.public}/site.lib.js" force="true" fixlastline="true">
+			<filelist dir="${dir.ivycache}" files="${libs.slider}" />
+			<filelist dir="${dir.local}" files="site.manager.js" />
+		</concat>
+		
+		<java jar="${YUI}" fork="true" failonerror="true">
+        	<arg line="-o ${dir.public}/site.lib.js ${dir.public}/site.lib.js"/>
+    	</java>
+	</target>
+</project>

@@ -1,0 +1,17 @@
+<ivysettings>
+	<property name="ivy.artifactproperty.name" value="[organization].[module]"/>
+	<property name="ivy.artifactproperty.value" value="${ivy.cache.dir}\[organization]\[module]-[revision].js"/>
+	
+	<settings defaultResolver="JSResolver"/>
+	
+	<caches defaultCacheDir="${basedir}/.artifacts" artifactPattern="[organization]/[module]-[revision].js" />
+	
+	<resolvers>
+		<!--<url name="JSResolver" alwaysCheckExactRevision="yes" checkmodified="true">
+			<artifact pattern="http://jsrepo.lcl/dist/[module]-[revision]/[module].js" />
+		</url>-->
+		<filesystem name="JSResolver">
+			<artifact pattern="${repoLocalPath}/jsrepo/dist/[module]-[revision]/[module].js" />
+		</filesystem>
+	</resolvers>
+</ivysettings>
