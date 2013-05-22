@@ -1,1 +1,1 @@
-wait for italian jsday (http://jsday.it) for instructions
+an example of repository for a continuous integration process based on apache ANT.
